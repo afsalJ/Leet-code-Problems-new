@@ -1,0 +1,28 @@
+class Solution {
+    List<String> ans = new ArrayList<>();
+    public List<String> letterCombinations(String digits) {
+        String letters[]={"","","abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz"};
+        List<String> li = new ArrayList<>();
+        for(int i=0;i<digits.length();i++){
+            int digit = digits.charAt(i)-'0';
+            li.add(letters[digit]);
+        }
+        combinations(0, li, "");
+        return ans;
+    }
+
+    public void combinations(int index , List<String> li, String res){
+        if(index==li.size()){
+            if(!res.equals("")){
+                ans.add(res);                
+            }
+            return;
+        }
+
+        String curr = li.get(index);
+        for(int i=0;i<curr.length();i++){
+            combinations(index+1, li, res+curr.charAt(i));
+        }
+        return;
+    }
+}
