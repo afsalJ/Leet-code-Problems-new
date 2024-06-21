@@ -1,0 +1,59 @@
+class Solution {
+    public int maxSatisfied(int[] customers, int[] grumpy, int minutes) {
+    
+        int n = customers.length;
+        int sum = 0;
+        
+        //If the owner can keeps themselves than n (all the time)
+        if(minutes>=n){
+            for(int i=0;i<minutes && i<n;i++){
+                sum += customers[i];
+            }
+        }
+        else{
+            int window = minutes-1;
+            int max = 0;
+            TreeMap<Integer, Integer> map = new TreeMap<>();
+            for(int i=0;i<minutes;i++){
+                if(grumpy[i]==1){
+                    sum+=customers[i];
+                    map.put(i, customers[i]);
+                }
+            }
+            max = sum;
+            for(int i=minutes;i<n;i++){
+                Iterator<Integer> iterator = map.keySet().iterator();
+                while(iterator.hasNext()){
+                    Integer k = iterator.next();
+                    if(k<=i-minutes){
+                        sum -= map.get(k);
+                        iterator.remove();
+                    }
+                    else{
+                        break;
+                    }
+                }
+                if(grumpy[i]==1){
+                    sum+=customers[i];
+                    map.put(i, customers[i]);   
+                    if(max<sum){
+                        max = sum;
+                        window = i;
+                    }
+                }
+            }
+
+            for(int i=(window-minutes)+1;i<=window;i++){
+                grumpy[i]=0;
+            }
+
+            sum = 0;
+            for(int i=0;i<n;i++){
+                if(grumpy[i]==0){
+                    sum+=customers[i];
+                }
+            }
+        }
+        return sum;
+    }
+}
