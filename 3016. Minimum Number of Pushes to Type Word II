@@ -1,0 +1,41 @@
+class Solution {
+    public int minimumPushes(String word) {
+        word = word.toLowerCase();
+        int[] freq = new int[26];
+        
+        for(int i=0;i<word.length();i++){
+            freq[word.charAt(i)-'a']++;
+        }
+
+        char[] sorted = new char[26];
+        int si = 0; // si - sorted index (index of sorted array)
+
+        for(int i=0;i<26;i++){
+            if(freq[i]!=0){
+                char key = (char)('a'+i);
+                int j = si - 1;
+                while(j>=0 && freq[sorted[j]-'a']<freq[i]){
+                    sorted[j+1]=sorted[j];
+                    j--;
+                }
+                sorted[j+1]=key;
+                si++;
+            }
+        }
+
+        int push = 0;
+        int multiplier = 1;
+        int count  = 0;
+        for(int i=0;i<26;i++){
+            if(sorted[i]!='\u0000'){
+                if(count%8==0){
+                    multiplier = (count/8)+1;
+                }
+                push += freq[sorted[i]-'a']*multiplier;
+                count++;
+            }
+        }
+
+        return push;
+    }
+}
