@@ -1,0 +1,76 @@
+class Solution {
+    public int numMagicSquaresInside(int[][] grid) {
+        int count = 0;
+        int n = grid.length;
+        int m = grid[0].length;
+        for(int i=0;i<=n-3;i++){
+            for(int j=0;j<=m-3;j++){
+                if(isValid(grid, i, j)){
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
+    public boolean isValid(int[][] grid, int row, int col){
+
+        int[] visited=new int[10];
+        for(int i=row;i<row+3;i++){
+            for(int j=col;j<col+3;j++){
+                if(!(1<=grid[i][j] && grid[i][j]<=9) || visited[grid[i][j]]==1){
+                    return false;
+                }
+                visited[grid[i][j]] = 1;
+            }
+        }
+
+        int sum = 0;
+        // System.out.println(row+" "+col);
+        for(int i=row;i<row+3;i++){
+            sum = 0;
+            for(int j=col;j<col+2;j++){
+                sum += grid[i][j];
+            }
+            if(15-sum != grid[i][col+2]){
+                return false;
+            }
+        }
+        // System.out.println("Passed 1");
+
+        for(int j=col;j<col+3;j++){
+            sum = 0;
+            for(int i=row;i<row+2;i++){
+                sum += grid[i][j];
+            }
+            if(15-sum != grid[row+2][j]){
+                return false;
+            }
+        }
+        // System.out.println("Passed 2");
+
+        sum = 0;
+        for(int i=row, j=col;i<row+3;i++,j++){
+            sum += grid[i][j];
+        }
+
+        if(sum!=15){
+            return false;
+        }
+        // System.out.println("Passed 3");
+
+
+        sum = 0;
+        for(int i=row+2, j=col+2;i>=row;i--,j--){
+            sum+=grid[i][j];
+        }
+
+        if(sum!=15){
+            return false;
+        }
+        // System.out.println("Passed 4");
+
+        return true;
+    }
+}
