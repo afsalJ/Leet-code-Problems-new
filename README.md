@@ -7,4 +7,4 @@ Hello everyone!
  Most of the problems are in java Program.
 
  
- Problems solved with C has the tag (in C) in their file name
+ Problems solved with C has (in C) in their file name
